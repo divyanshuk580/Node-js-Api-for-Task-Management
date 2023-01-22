@@ -10,5 +10,14 @@ module.exports={
                 callBack(null,results);
             }
         })
+    },
+    notificationListByUserId:(data,callBack)=>{
+        conn.query(`select * from notifications where send_to = ?`,data,(error,results,fields)=>{
+            if(error){
+                callBack(error);
+            }else{
+                callBack(null,results);
+            }
+        })
     }
 }

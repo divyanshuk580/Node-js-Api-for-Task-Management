@@ -9,6 +9,7 @@ const {
   deleteUserById,
   restoreUserById,
   login,
+  logout
 } = require("../Controllers/user.controller");
 // const router = require("express").router();
 const { checkToken } = require("../auth/token_validation");
@@ -21,5 +22,6 @@ router.get("/detail/:id", checkToken, userDetailById);
 router.get("/delete/:id", checkToken, deleteUserById);
 router.get("/restore/:id", checkToken, restoreUserById);
 router.post("/login", login);
+router.get("/logout",logout);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const { create, showUser, showUserByEmail, updateUser, getUserById,deleteUser,restoreUser } = require('../Models/user.model');
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
+const session = require('express-session');
 
 module.exports = {
     createUser : (req, resp) =>{
@@ -100,6 +101,8 @@ module.exports = {
                 const jsontoken = sign({result:results},process.env.SECRET_KEY,{
                     expiresIn:"1h"
                 });
+               
+                req.session.userId = results.id;
                 req.body={
                     userId:results.id
                 }
@@ -107,7 +110,8 @@ module.exports = {
                 return resp.json({
                     success:1,
                     message:'Login Successfully',
-                    token:jsontoken
+                    token:jsontoken,
+                    userId:results.id
                 });
             }else{
                 return resp.json({
@@ -116,5 +120,17 @@ module.exports = {
                 });
             }
         })
+    },
+    logout:(req,resp)=>{
+        if (req.session.userId) {
+            delete req.session.userId;
+            delete req.userId;
+            resp.json({
+                success:1,
+                message: 'Log Out Successfully'
+            });
+        } else {
+            resp.json({result: 'ERROR', message: 'User is not logged in.'});
+        }
     }
 }

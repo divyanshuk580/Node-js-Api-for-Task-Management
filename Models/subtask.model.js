@@ -45,5 +45,35 @@ module.exports = {
                 callBack(null,results);
             }
         })
+    },
+    /*Get Total Task By Id */ 
+    getTotalTaskByUserId:(data,callBack)=>{
+        conn.query(`select count(*) AS taskCount from subtask where assign_to = ? `,data,(error,results,fields)=>{
+            if(error){
+                callBack(error);
+            }else{
+                callBack(null,results);
+            }
+        })
+    },
+
+    pendingTaskByUserId:(data,callBack)=>{
+        conn.query(`select count(*) AS taskCount from subtask where assign_to = ? AND is_completed = 0`,data,(error,results,fields)=>{
+            if(error){
+                callBack(error);
+            }else{
+                callBack(null,results);
+            }
+        })
+    },
+
+    completedTaskByUserId:(data,callBack)=>{
+        conn.query(`select count(*) AS taskCount from subtask where assign_to = ? AND is_completed = 1`,data,(error,results,fields)=>{
+            if(error){
+                callBack(error);
+            }else{
+                callBack(null,results);
+            }
+        })
     }
 }

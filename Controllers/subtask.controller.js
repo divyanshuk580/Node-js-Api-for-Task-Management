@@ -42,7 +42,10 @@ module.exports = {
   getAllSubtask: (req, resp) => {
     showAllSubTask((err, results) => {
       if (err) throw err;
-      resp.send(results);
+      return resp.json({
+        userId:req.session.userId,
+        result:results
+      });
     });
   },
   updateSubtaskById: (req, resp) => {
@@ -71,11 +74,11 @@ module.exports = {
           if (err) throw err;
         });
       }
-      resp.send(results);
-    //   return resp.json({
-    //     success: 1,
-    //     message: "Task is updated successfully",
-    //   });
+      // resp.send(results);
+      return resp.json({
+        success: 1,
+        message: "Task is updated successfully",
+      });
     });
   },
   subTaskDeleteById: (req, resp) => {
